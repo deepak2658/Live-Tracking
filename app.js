@@ -2,45 +2,42 @@ const express = require('express')
 const bodyparser = require('body-parser')
 const socket = require('socket.io')
 const http = require('http')
+const jszip = require('jszip')
 const path = require('path')
 
 const app = express()
 const server = http.createServer(app)
-const io = socket(server) //creating socketIo and bind it to our server
+const io = socket(server)
 
-const calc = require('./controllers/calc')
+const routes = require('./routes/routes')
+app.use(routes);
 
-//static path join
+app.set('views engine','pug');
+app.set('views','views');
 app.use(express.static(path.join(__dirname,'public')))
 
-
-//namespaces driver
 const drivernsp = io.of('/driver')
-const activeDrivers = new Map()
-let usermap = new Map()
+const usernsp = io.of('/user')
 
-drivernsp.on('connect',socket=>{
-    freedrivers = activeDrivers;
-    //registering the drivers tracking into the map
-    socket.on('registerdriver',pos=>{
-        // console.log(pos)
-        activeDrivers.set(socket.id,{lat:null,lng:null})
-        if(activeDrivers.has(socket.id)){
-            activeDrivers.set(socket.id,pos)
+//map to store user locations
+const activeUsers = new Map()
+
+//map to store driver locations
+const activeDrivers = new Map()
+
+//driver websockets under driver namespace
+usernsp.on('connect', socket=>{
+    console.log(socket.id)
+    
+    // registering to map
+    socket.on('registeruser',pos=>{
+        // console.log(pos)      // testing websocket
+        activeUsers.set(123,{lat:null,lng:null})
+        if(activeUsers.has(123)){
+            activeUsers.set(123,pos)
         }   
     })
 
-    socket.on('userlocation',(pos)=>{
-        //console.log(pos)
-        usermap.set(123,{lat:null,lng:null})
-        if(usermap.has(123)){
-            usermap.set(123,pos)
-        }
-    })
-    
-    socket.on('testdriver',()=>{
-        console.log('test succesful')
-    })
     socket.on('checkavailability',()=>{
         socket.join('username');
         socket.to('username').emit('test')
@@ -48,7 +45,24 @@ drivernsp.on('connect',socket=>{
         console.log('test2 initiated')
         
     })
-    // socket.emit('ee',activeDrivers);
+
+    socket.on('disconnect',()=>{
+        activeUsers.delete(socket.id);
+    })
+
+   
+})
+
+//user websockets under user namespace
+drivernsp.on('connect',socket=>{
+    socket.on('registerdriver',pos=>{
+        console.log(pos)
+        activeDrivers.set(socket.id,{lat:null,lng:null})
+        if(activeDrivers.has(socket.id)){
+            activeDrivers.set(socket.id,pos)
+        }   
+    })
+
     socket.on('update',(room)=>{
         console.log('test 3 successfull')
         // console.log(''+room.room)
@@ -57,7 +71,6 @@ drivernsp.on('connect',socket=>{
         io.of('/driver').to(''+room.room).emit('start',room.room)
     })
 
-    
     socket.on('go',(room)=>{
         //console.log(activeDrivers.get(socket.id))
         //console.log(room)
@@ -66,19 +79,23 @@ drivernsp.on('connect',socket=>{
         if(pos.has(socket.id)){
             pos.set(socket.id,activeDrivers.get(socket.id))
         }
-        pos.set(12,usermap.get(123))
+        pos.set(12,activeUsers.get(123))
         //console.log(Array.from(pos))
-        io.of('/driver').to(''+room.room).emit('location',Array.from(pos))
+        io.of('/user').to(''+room.room).emit('location',Array.from(pos))
     })
+    // socket.on('testdriver',()=>{
+    //     console.log('test succesful')
+    // })
 
-    socket.on('disconnect',()=>{
-        activeDrivers.delete(socket.id);
-    })
+    // socket.on('disconnect',()=>{
+    //     activeDrivers.delete(socket.id);
+    // })
+
 })
 
 server.listen(3000,err=>{
     if(err){
-        throw err;
+        throw err
     }
-    console.log('Server started at port 3000')
+    console.log("Server started at port 3000")
 })

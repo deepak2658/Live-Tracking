@@ -1,0 +1,31 @@
+doctype html
+head
+  link(href='./css/mapstyle.css' rel='stylesheet')
+#mapContainer
+script(src='https://js.api.here.com/v3/3.1/mapsjs-core.js' type='text/javascript' charset='utf-8')
+script(src='https://unpkg.com/axios/dist/axios.min.js')
+script(src='https://js.api.here.com/v3/3.1/mapsjs-service.js' type='text/javascript' charset='utf-8')
+script(src='./js/creds.js')
+script(src='/socket.io/socket.io.js')
+script(src='https://js.api.here.com/v3/3.1/mapsjs-ui.js' type='text/javascript' charset='utf-8')
+link(rel='stylesheet' type='text/css' href='https://js.api.here.com/v3/3.1/mapsjs-ui.css')
+script(src='https://js.api.here.com/v3/3.1/mapsjs-mapevents.js' type='text/javascript' charset='utf-8')
+script(src='https://stuk.github.io/jszip/dist/jszip.js')
+script(src='https://unpkg.com/axios/dist/axios.min.js')
+script(src='./js/user.js')
+script(src='./js/map.js')
+script(src='./js/routing.js')
+.div2
+  h1 Locate dustbins in your nearby places !!
+  button#sendFence Send My Geofence
+  p Click here to see dutbins closest to you.
+script(src='/socket.io/socket.io.js')
+div(id ="drop_point" style="visibility: hidden;") #{drop_point}
+// <script src="./js/mapdisp.js"></script>
+script(src='./js/user.js')
+script(src='./js/index.js')
+div
+  | this div will be showing the google map
+div
+  button#checknow Check Now
+  

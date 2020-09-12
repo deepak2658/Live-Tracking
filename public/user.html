@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Map View</title>
-        <meta name="viewport" content="initial-scale=1.0">
-        <style>
-          /* Always set the map height explicitly to define the size of the div
-           * element that contains the map. */
-          #map {
-            height: 80%;
-          }
-          /* Optional: Makes the sample page fill the window. */
-          html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-          }
-        </style>
+        <link href="./css/mapstyle.css" rel="stylesheet">
     </head>
     <body>
-        <div id='map'></div>
+        <div id="mapContainer" ></div>
+                <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+                type="text/javascript" charset="utf-8"></script>
+                <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+                <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+                type="text/javascript" charset="utf-8"></script>
+                <script src="./js/creds.js"></script>
+                <script src="/socket.io/socket.io.js"></script>
+                <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"
+                type="text/javascript" charset="utf-8"></script>
+                <link rel="stylesheet" type="text/css"
+                href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+                <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"
+                type="text/javascript" charset="utf-8"></script>
+                <script src="https://stuk.github.io/jszip/dist/jszip.js"></script> 
+                <script src="https://unpkg.com/axios/dist/axios.min.js"></script> 
+
+                <script src="./js/user.js"></script>
+                
+                <script src="./js/map.js"></script>   
+                <script src="./js/routing.js"></script>    
+        <div class="div2">
+            <h1>Locate dustbins in your nearby places !!</h1>
+            <button id="sendFence">Check Availability</button>
+            <p>Click here to see dutbins closest to you.</p>       
+        </div>
+
         <script src="/socket.io/socket.io.js"></script>
         <!-- <script src="./js/mapdisp.js"></script> -->
-        <script src="./js/user.js"></script>
-        <script src="./js/index.js"></script>
-        
-       
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSJjs1TLwp65F7xWM1bG0jheez013ygL8&callback=initMap"
-        async defer></script>
-        <div>
-            this div will be showing the google map 
-        </div>
-        <div>
-            <button id="checknow">Check Now</button>
-        </div>
+        <!-- <script src="./js/user.js"></script> -->
+        <!-- <script src="./js/index.js"></script> -->
     </body>
 </html>
 
